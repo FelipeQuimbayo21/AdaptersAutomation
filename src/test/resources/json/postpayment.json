@@ -1,0 +1,62 @@
+{
+  "Data": {
+    "ConsentId": "0",
+    "Initiation": {
+      "InstructionIdentification": "0555ca8f-bca6-470e-a192-2e897578a30",
+      "EndToEndIdentification": "0",
+      "LocalInstrument": "",
+      "InstructedAmount": {
+        "Amount": "750.00",
+        "Currency": "COP"
+      },
+      "DebtorAccount": {
+        "SchemeName": "CAHO",
+        "Identification": "1230456789",
+        "Name": "Jack White",
+        "SecondaryIdentification": "1018460282"
+      },
+      "CreditorAccount": {
+        "Identification": "910203040",
+        "Name": "Larry King",
+        "SecondaryIdentification": "MERCHANTID"
+      },
+      "CreditorPostalAddress": {
+        "AddressType": "Business",
+        "Department": "",
+        "SubDepartment": "",
+        "StreetName": "",
+        "BuildingNumber": "",
+        "PostCode": "",
+        "TownName": "",
+        "CountrySubDivision": "",
+        "Country": "",
+        "AddressLine": [
+          ""
+        ]
+      },
+      "RemittanceInformation": {
+        "Unstructured": "",
+        "Reference": ""
+      },
+      "SupplementaryData": {
+        "DebtorMobileNumber": "3138745276"
+      }
+    }
+  },
+  "Risk": {
+    "PaymentContextCode": "BillPayment",
+    "MerchantCategoryCode": "",
+    "MerchantCustomerIdentification": "",
+    "DeliveryAddress": {
+      "AddressLine": [
+        ""
+      ],
+      "StreetName": "",
+      "BuildingNumber": "",
+      "PostCode": "",
+      "TownName": "",
+      "CountrySubDivision": "",
+      "Country": ""
+    }
+  }
+}
