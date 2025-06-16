@@ -4,7 +4,7 @@ import io.qameta.allure.*;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
-import utils.FileStore;
+import Utils.FileStore;
 import static io.restassured.RestAssured.given;
 
 @Feature("Api Testing")
@@ -12,7 +12,7 @@ public class TestGetPayment {
     String domesticPayment = FileStore.readConsentId();
 
     @Test
-    @Story("POST Payment Status")
+    @Feature("Get Payment")
     public void testGetPayment() {
         BaseTest config = new BaseTest();
         config.setUp();

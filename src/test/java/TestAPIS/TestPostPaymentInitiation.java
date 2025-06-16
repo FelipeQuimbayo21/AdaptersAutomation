@@ -4,7 +4,7 @@ import io.qameta.allure.*;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
-import utils.FileStore;
+import Utils.FileStore;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -12,7 +12,7 @@ import static io.restassured.RestAssured.given;
 @Feature("API Testing")
 public class TestPostPaymentInitiation {
     @Test
-    @Story("POST Payment Status")
+    @Feature("POST Payment")
     public void testPostPayment() throws IOException {
         BaseTest config = new BaseTest();
         config.setUp();
