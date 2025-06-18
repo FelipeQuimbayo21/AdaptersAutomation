@@ -1,62 +1,62 @@
-{
-  "Data": {
-    "ConsentId": "3deacdf4-7811-4f45-9677-f09f258ca21f",
-    "Initiation": {
-      "InstructionIdentification": "0555ca8f-bca6-470e-a192-2e897578a30",
-      "EndToEndIdentification": "DEMO USER",
-      "LocalInstrument": null,
-      "InstructedAmount": {
-        "Amount": "1.00",
-        "Currency": "COP"
-      },
-      "DebtorAccount": {
-        "SchemeName": "CAHO",
-        "Identification": "3163363139",
-        "Name": "Julian",
-        "SecondaryIdentification": "3048660"
-      },
-      "CreditorAccount": {
-        "SchemeName": "CAHO",
-        "Identification": "0035073162",
-        "Name": "PRUE",
-        "SecondaryIdentification": "MERCHANTID"
-      },
-      "CreditorPostalAddress": {
-        "AddressType": "Business",
-        "Department": "@@@@",
-        "SubDepartment": "@@@@@",
+  {
+    "Data": {
+      "ConsentId": "{{$randomUUID}}",
+      "Initiation": {
+        "InstructionIdentification": "0555ca8f-bca6-470e-a192-2e891572a20",
+        "EndToEndIdentification": "DEMO USER",
+        "LocalInstrument": null,
+        "InstructedAmount": {
+          "Amount": "{{$randomAmount}}",
+          "Currency": "COP"
+        },
+        "DebtorAccount": {
+          "SchemeName": "CAHO",
+          "Identification": "00180004440",
+          "Name": "Angela benitez",
+          "SecondaryIdentification": "19256597"
+        },
+        "CreditorAccount": {
+          "SchemeName": "CAHO",
+          "Identification": "937134616",
+          "Name": "Prueba",
+          "SecondaryIdentification": "MERCHANTID"
+        },
+        "CreditorPostalAddress": {
+          "AddressType": "Business",
+          "Department": "@@@@",
+          "SubDepartment": "@@@@@",
+          "StreetName": "",
+          "BuildingNumber": "",
+          "PostCode": "050021",
+          "TownName": "",
+          "CountrySubDivision": "",
+          "Country": "CO",
+          "AddressLine": [
+            "Sin direccion"
+          ]
+        },
+        "RemittanceInformation": {
+          "Unstructured": "",
+          "Reference": ""
+        },
+        "SupplementaryData": {
+          "DebtorMobileNumber": "3163363139"
+        }
+      }
+    },
+    "Risk": {
+      "PaymentContextCode": "BillPayment",
+      "MerchantCategoryCode": "",
+      "MerchantCustomerIdentification": "",
+      "DeliveryAddress": {
+        "AddressLine": [
+        ],
         "StreetName": "",
         "BuildingNumber": "",
-        "PostCode": "050021",
-        "TownName": "",
+        "PostCode": "",
+        "TownName": "Bogota",
         "CountrySubDivision": "",
-        "Country": "CO",
-        "AddressLine": [
-          "Sin direccion"
-        ]
-      },
-      "RemittanceInformation": {
-        "Unstructured": "",
-        "Reference": ""
-      },
-      "SupplementaryData": {
-        "DebtorMobileNumber": "3163363139"
+        "Country": "CO"
       }
     }
-  },
-  "Risk": {
-    "PaymentContextCode": "BillPayment",
-    "MerchantCategoryCode": "",
-    "MerchantCustomerIdentification": "",
-    "DeliveryAddress": {
-      "AddressLine": [
-      ],
-      "StreetName": "",
-      "BuildingNumber": "",
-      "PostCode": "",
-      "TownName": "Bogota",
-      "CountrySubDivision": "",
-      "Country": "CO"
-    }
   }
-}
