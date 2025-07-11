@@ -54,5 +54,21 @@ public class TestValidations {
     public void charSpecialsCreditorAccountSecondaryIdentification() throws IOException {
         new TestPostPaymentInitiation().charSpecialsCreditorAccountSecondaryIdentification();
     }
+    @Test(priority = 13)
+    public void paymentContextBillPayment() throws IOException {
+        new TestPostPaymentInitiation().paymentContextBillPayment();
+    }
+    @Test(priority = 14)
+    public void isMissingBankId() throws IOException {
+        new TestPostPaymentInitiation().isMissingBankId();
+    }
+    @Test(priority = 15)
+    public void NoAvailableBalance() throws IOException {
+        new TestPostPaymentInitiation().NoAvailableBalance();
+    }
+    @Test(priority = 16)
+    public void amountNegativeTransaction() throws IOException {
+        new TestPostPaymentInitiation().amountNegativeTransaction();
+    }
 }
 

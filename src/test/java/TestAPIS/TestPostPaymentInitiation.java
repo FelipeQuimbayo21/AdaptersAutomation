@@ -29,14 +29,14 @@ public class TestPostPaymentInitiation {
         String endpoint = "cert/api/paymentInitiation/" + bankId;
         String jsonBodyTemplate = new String(Files.readAllBytes(Paths.get("src/test/resources/json/postpayment.json")));
         String uuid = UUID.randomUUID().toString();
-        double randomAmount = ThreadLocalRandom.current().nextDouble(1000.00, 20000.00);
+        double randomAmount = ThreadLocalRandom.current().nextDouble(100.00, 900.00);
         String amountFormatted = String.format(Locale.US, "%.2f", randomAmount);
         String jsonBody = jsonBodyTemplate
                 .replace("{{$randomUUID}}", uuid)
-                .replace("{{$randomAmount}}", amountFormatted);
+                .replace("200.00", amountFormatted);
         Response response = given()
                 .filter(new AllureRestAssured())
-                .header("x-fapi-interaction-id", "e82bc935-644f-4c7e-9273-86d41059cef7")
+                .header("x-fapi-interaction-id", uuid)
                 .header("Content-Type", "application/json")
                 .header("Host", "vj4mk6pz0m.execute-api.us-east-1.amazonaws.com")
                 .body(jsonBody)
@@ -172,7 +172,7 @@ public class TestPostPaymentInitiation {
         String amountFormatted = String.format(Locale.US, "%.2f", randomAmount);
         String json = jsonTemplate
                 .replace("{{$randomUUID}}", uuid)
-                .replace("00180004440","0018000444@")
+                .replace("214021007548984001","0018000444@")
                 .replace("{{$randomAmount}}", amountFormatted);
         Response response = given()
                 .header("Content-Type","application/json")
@@ -195,7 +195,7 @@ public class TestPostPaymentInitiation {
         String amountFormatted = String.format(Locale.US, "%.2f", randomAmount);
         String json = jsonTemplate
                 .replace("{{$randomUUID}}", uuid)
-                .replace("Angela benitez","Angela Nuñ@ez")
+                .replace("Test Prueba","Angela Nuñ@ez")
                 .replace("{{$randomAmount}}", amountFormatted);
         Response response = given()
                 .header("Content-Type", "application/json; charset=UTF-8")
@@ -218,7 +218,7 @@ public class TestPostPaymentInitiation {
         String amountFormatted = String.format(Locale.US, "%.2f", randomAmount);
         String json = jsonTemplate
                 .replace("{{$randomUUID}}", uuid)
-                .replace("19256597","19256597@")
+                .replace("3048660","3048660@")
                 .replace("{{$randomAmount}}", amountFormatted);
         Response response = given()
                 .header("Content-Type","application/json")
@@ -265,7 +265,7 @@ public class TestPostPaymentInitiation {
         String json = jsonTemplate
                 .replace("{{$randomUUID}}", uuid)
                 .replace("{{$randomAmount}}", amountFormatted)
-                .replace("937134616","937134616@");
+                .replace("0035073162","937134616@");
         Response response = given()
                 .header("Content-Type","application/json")
                 .header("Host","vj4mk6pz0m.execute-api.us-east-1.amazonaws.com")
@@ -316,6 +316,95 @@ public class TestPostPaymentInitiation {
                 .header("Host","vj4mk6pz0m.execute-api.us-east-1.amazonaws.com")
                 .header("x-fapi-interaction-id",uuid)
                 .header("Content-Type","application/json")
+                .body(json)
+                .post(endpoint);
+        response.then().log().all().assertThat().statusCode(400);
+    }
+    @Test
+    @Feature("POST Payment")
+    public void paymentContextBillPayment() throws IOException{
+        Allure.getLifecycle().updateTestCase(testResult -> testResult.setName("Enviar una solicitud POST con valor EcommerceGoods en el campo PaymentContextCode"));
+        BaseTest config = new BaseTest();
+        config.setUp();
+        String endpoint = "cert/api/paymentInitiation/"+bankId;
+        String uuid = UUID.randomUUID().toString();
+        double amountRandom = ThreadLocalRandom.current().nextDouble(10000, 20000);
+        String formatAmount = String.format(Locale.US, "%.2f", amountRandom);
+        String jsonTemplate = new String(Files.readAllBytes(Paths.get("src/test/resources/json/postpayment.json")));
+        String json = jsonTemplate
+                .replace("{{$randomUUID}}", uuid)
+                .replace("{{$randomAmount}}", formatAmount)
+                .replace("BillPayment","EcommerceGoods");
+        Response response = given()
+                .header("Host","vj4mk6pz0m.execute-api.us-east-1.amazonaws.com")
+                .header("Content-Type","application/json")
+                .header("x-fapi-interaction-id",uuid)
+                .body(json)
+                .post(endpoint);
+        response.then().log().all().assertThat().statusCode(201);
+    }
+    @Test
+    @Feature("POST Payment")
+    public void isMissingBankId() throws IOException{
+        Allure.getLifecycle().updateTestCase(testResult -> testResult.setName("Enviar una solicitud POST cuando falta el bankId"));
+        BaseTest config = new BaseTest();
+        config.setUp();
+        String endpoint = "cert/api/paymentInitiation/";
+        String uuid = UUID.randomUUID().toString();
+        double amountRandom = ThreadLocalRandom.current().nextDouble(10000, 20000);
+        String formatAmount = String.format(Locale.US, "%.2f", amountRandom);
+        String jsonTemplate = new String(Files.readAllBytes(Paths.get("src/test/resources/json/postpayment.json")));
+        String json = jsonTemplate
+                .replace("{{$randomUUID}}",uuid)
+                .replace("{{$randomAmount}}",formatAmount);
+        Response response = given()
+                .header("Host","vj4mk6pz0m.execute-api.us-east-1.amazonaws.com")
+                .header("Content-Type","application/json")
+                .header("x-fapi-interaction-id",uuid)
+                .body(json)
+                .post(endpoint);
+        response.then().log().all().assertThat().statusCode(403);
+    }
+    @Test
+    @Feature("POST Payment")
+    public void NoAvailableBalance() throws IOException{
+        Allure.getLifecycle().updateTestCase(testResult -> testResult.setName("Enviar una solicitud POST sin saldo disponible."));
+        BaseTest config = new BaseTest();
+        config.setUp();
+        String endpoint = "cert/api/paymentInitiation/"+bankId;
+        String uuid = UUID.randomUUID().toString();
+        double randomAmount = ThreadLocalRandom.current().nextDouble(20000,40000);
+        String formatAmount = String.format(Locale.US, "%.2f", randomAmount);
+        String jsonTemplate = new String(Files.readAllBytes(Paths.get("src/test/resources/json/postpayment.json")));
+        String json = jsonTemplate
+                .replace("{{$randomUUID}}",uuid)
+                .replace("{{$randomAmount}}", formatAmount)
+                .replace("214021007548984001","15489666")
+                .replace("3048660","100225425");
+        Response response = given()
+                .header("x-fapi-interaction-id",uuid)
+                .header("Host","vj4mk6pz0m.execute-api.us-east-1.amazonaws.com")
+                .header("Content-Type","application/json")
+                .body(json)
+                .post(endpoint);
+        response.then().log().all().assertThat().statusCode(201);
+    }
+    @Test
+    @Feature("POST Payment")
+    public void amountNegativeTransaction() throws IOException {
+        Allure.getLifecycle().updateTestCase(testResult -> testResult.setName("Enviar una solicitud POST con un monto en negativo."));
+        BaseTest config = new BaseTest();
+        config.setUp();
+        String uuid = UUID.randomUUID().toString();
+        String endpoint = "cert/api/paymentInitiation/"+bankId;
+        String jsonTemplate = new String(Files.readAllBytes(Paths.get("src/test/resources/json/postpayment.json")));
+        String json = jsonTemplate
+                .replace("{{$randomUUID}}",uuid)
+                .replace("{{$randomAmount}}", "-50000");
+        Response response = given()
+                .header("Host","vj4mk6pz0m.execute-api.us-east-1.amazonaws.com")
+                .header("Content-Type","application/json")
+                .header("x-fapi-interaction-id",uuid)
                 .body(json)
                 .post(endpoint);
         response.then().log().all().assertThat().statusCode(400);

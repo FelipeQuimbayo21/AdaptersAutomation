@@ -11,13 +11,13 @@
         },
         "DebtorAccount": {
           "SchemeName": "CAHO",
-          "Identification": "00180004440",
-          "Name": "Angela benitez",
-          "SecondaryIdentification": "19256597"
+          "Identification": "214021007548984001",
+          "Name": "Test Prueba",
+          "SecondaryIdentification": "3048660"
         },
         "CreditorAccount": {
           "SchemeName": "CAHO",
-          "Identification": "937134616",
+          "Identification": "0035073162",
           "Name": "Prueba",
           "SecondaryIdentification": "MERCHANTID"
         },
