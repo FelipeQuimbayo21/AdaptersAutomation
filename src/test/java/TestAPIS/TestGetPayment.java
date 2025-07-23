@@ -1,11 +1,12 @@
 package TestAPIS;
-import BaseTest.BaseTest;
+import baseTest.BaseTest;
 import io.qameta.allure.*;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
-import Utils.FileStore;
+import utils.FileStore;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
@@ -16,7 +17,7 @@ public class TestGetPayment {
 
     @Test
     @Feature("Get Payment")
-    public void testGetPayment() {
+    public void testGetPayment() throws IOException {
         BaseTest config = new BaseTest();
         config.setUp();
         Allure.getLifecycle().updateTestCase(testResult -> testResult.setName("Verificar consulta de pago exitosamente"));
