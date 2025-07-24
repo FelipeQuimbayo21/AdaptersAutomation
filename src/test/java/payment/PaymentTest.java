@@ -213,10 +213,107 @@ public class PaymentTest extends RequestPayment {
                 .spec(new RequestPayment().requestSpecificationCharSpecialsCreditorAccountSecondaryIdentification())
                 .basePath("cert/api/paymentInitiation/" + bankId)
                 .filter(new AllureRestAssured())
-                .log().all()
                 .request(Method.POST);
         response.then().log().all().assertThat().statusCode(400);
         String message = response.jsonPath().getString("Errors.Message");
         Assert.assertTrue(message.contains("Valor inválido"),"No se encuentra el mensaje");
+    }
+    @Epic("Payment")
+    @Feature("Make payment")
+    @Test(groups = "Regression")
+    public void paymentContextEcommerceGoods() throws IOException {
+        config();
+        Allure.getLifecycle().updateTestCase(testResult -> testResult.setName("Enviar una solicitud POST con valor EcommerceGoods en el campo PaymentContextCode"));
+        response = RestAssured.given()
+                .spec(new RequestPayment().requestSpecificationPaymentContextBillPayment())
+                .basePath("cert/api/paymentInitiation/" + bankId)
+                .filter(new AllureRestAssured())
+                .request(Method.POST);
+        response.then().log().all().assertThat().statusCode(201);
+        String domestic = response.jsonPath().getString("Data.DomesticPaymentId");
+        Assert.assertFalse(domestic.isEmpty(),"No se muestra el mensaje");
+    }
+    @Epic("Payment")
+    @Feature("Make payment")
+    @Test(groups = "Regression")
+    public void isMissingBankId() throws IOException {
+        config();
+        Allure.getLifecycle().updateTestCase(testResult -> testResult.setName("Enviar una solicitud POST cuando falta el bankId"));
+        response = request.basePath("cert/api/paymentInitiation/")
+                .filter(new AllureRestAssured())
+                .request(Method.POST);
+        response.then().log().all().assertThat().statusCode(403);
+        String message = response.jsonPath().getString("message");
+        Assert.assertTrue(message.contains("Missing Authentication Token"),"No se muestra el mensaje");
+    }
+    @Epic("Payment")
+    @Feature("Make payment")
+    @Test(groups = "Regression")
+    public void NoAvailableBalance() throws IOException {
+        config();
+        Allure.getLifecycle().updateTestCase(testResult -> testResult.setName("Enviar una solicitud POST sin saldo disponible."));
+        response = RestAssured.given()
+                .spec(new RequestPayment().requestSpecificationNoAvailableBalance())
+                .basePath("cert/api/paymentInitiation/"+bankId)
+                .filter(new AllureRestAssured())
+                .request(Method.POST);
+        response.then().log().all().assertThat().statusCode(201);
+        String domestic = response.jsonPath().getString("Data.DomesticPaymentId");
+        Assert.assertFalse(domestic.isEmpty(),"No se muestra el mensaje");
+    }
+    @Epic("Payment")
+    @Feature("Make payment")
+    @Test(groups = "Regression")
+    public void amountNegativeTransaction() throws IOException {
+        config();
+        Allure.getLifecycle().updateTestCase(testResult -> testResult.setName("Enviar una solicitud POST con un monto en negativo."));
+        response = RestAssured.given()
+                .spec(new RequestPayment().requestSpecificationAmountNegativeTransaction())
+                .basePath("cert/api/paymentInitiation/"+bankId)
+                .filter(new AllureRestAssured())
+                .request(Method.POST);
+        response.then().log().all().assertThat().statusCode(400);
+        String message = response.jsonPath().getString("Errors.Message");
+        Assert.assertTrue(message.contains("Valor inválido"),"No se encuentra el mensaje");
+    }
+    @Epic("Payment")
+    @Feature("Make payment")
+    @Test(groups = "Regression")
+    public void bankIdNoExist() throws IOException {
+        config();
+        int bankId = 9999;
+        Allure.getLifecycle().updateTestCase(testResult -> testResult.setName("Enviar una solicitud POST cuando el bankId no existe"));
+        response = request.basePath("cert/api/paymentInitiation/" + bankId)
+                .filter(new AllureRestAssured())
+                .request(Method.POST);
+        response.then().log().all().assertThat().statusCode(404);
+        String message = response.jsonPath().getString("Errors.Message");
+        Assert.assertTrue(message.contains("BankId no se encuentra registrado"),"No se muestra el mensaje");
+    }
+    @Epic("Payment")
+    @Feature("Make payment")
+    @Test(groups = "Regression")
+    public void visibleFieldDomesticPaymentId() throws IOException {
+        config();
+        Allure.getLifecycle().updateTestCase(testResult -> testResult.setName("Verificar que la respuesta muestre el campo domesticPaymentId"));
+        response = request.basePath("cert/api/paymentInitiation/" + bankId)
+                .filter(new AllureRestAssured())
+                .request(Method.POST);
+        response.then().log().all().assertThat().statusCode(201);
+        String message = response.jsonPath().getString("Data.DomesticPaymentId");
+        Assert.assertFalse(message.isEmpty(),"No se muestra el mensaje");
+    }
+    @Epic("Payment")
+    @Feature("Make payment")
+    @Test(groups = "Regression")
+    public void visibleFieldStatus() throws IOException {
+        config();
+        Allure.getLifecycle().updateTestCase(testResult -> testResult.setName("Verificar que la respuesta muestre el valor status"));
+        response = request.basePath("cert/api/paymentInitiation/" + bankId)
+                .filter(new AllureRestAssured())
+                .request(Method.POST);
+        response.then().log().all().assertThat().statusCode(201);
+        String message = response.jsonPath().getString("Data.Status");
+        Assert.assertFalse(message.isEmpty(),"No se muestra el mensaje");
     }
 }

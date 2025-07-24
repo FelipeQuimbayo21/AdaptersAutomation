@@ -202,4 +202,49 @@ public class RequestPayment extends BaseTest {
                 .setBody(json)
                 .build();
     }
+    public RequestSpecification requestSpecificationPaymentContextBillPayment() throws IOException {
+        String uuid = UUID.randomUUID().toString();
+        String jsonBodyTemplate = new String(Files.readAllBytes(Paths.get("src/test/resources/json/postpayment.json")));
+        double randomAmount = ThreadLocalRandom.current().nextDouble(1000.00, 20000.00);
+        String amountFormatted = String.format(Locale.US, "%.2f", randomAmount);
+        String json = jsonBodyTemplate.replace("{{$randomAmount}}", amountFormatted)
+                .replace("BillPayment","EcommerceGoods")
+                .replace("{{$randomUUID}}", uuid);
+        return new RequestSpecBuilder()
+                .setContentType("application/json; charset=UTF-8")
+                .addHeader("x-fapi-interaction-id",uuid)
+                .addHeader("Host","vj4mk6pz0m.execute-api.us-east-1.amazonaws.com")
+                .setBody(json)
+                .build();
+    }
+    public RequestSpecification requestSpecificationNoAvailableBalance() throws IOException {
+        String uuid = UUID.randomUUID().toString();
+        double randomAmount = ThreadLocalRandom.current().nextDouble(100.00, 900.00);
+        String amountFormatted = String.format(Locale.US, "%.2f", randomAmount);
+        String jsonBodyTemplate = new String(Files.readAllBytes(Paths.get("src/test/resources/json/postpayment.json")));
+        String jsonBody = jsonBodyTemplate
+                .replace("{{$randomUUID}}", uuid)
+                .replace("{{$randomAmount}}", amountFormatted)
+                .replace("214021007548984001","15489666")
+                .replace("3048660","100225425");;
+        return new RequestSpecBuilder()
+                .setContentType(ContentType.JSON)
+                .addHeader("x-fapi-interaction-id",uuid)
+                .addHeader("Host","vj4mk6pz0m.execute-api.us-east-1.amazonaws.com")
+                .setBody(jsonBody)
+                .build();
+    }
+    public RequestSpecification requestSpecificationAmountNegativeTransaction() throws IOException {
+        String uuid = UUID.randomUUID().toString();
+        String jsonBodyTemplate = new String(Files.readAllBytes(Paths.get("src/test/resources/json/postpayment.json")));
+        String jsonBody = jsonBodyTemplate
+                .replace("{{$randomUUID}}", uuid)
+                .replace("{{$randomAmount}}", "-50000");
+        return new RequestSpecBuilder()
+                .setContentType(ContentType.JSON)
+                .addHeader("x-fapi-interaction-id",uuid)
+                .addHeader("Host","vj4mk6pz0m.execute-api.us-east-1.amazonaws.com")
+                .setBody(jsonBody)
+                .build();
+    }
 }

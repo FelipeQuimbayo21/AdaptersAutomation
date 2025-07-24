@@ -4,8 +4,8 @@
     </listeners>
     <test name="All Tests">
         <classes>
-            <class name="TestAdapters.TestAdapters"/>
-            <class name="TestAdapters.TestValidations"/>
+            <class name="testAdapters.TestAdapters"/>
+            <class name="testAdapters.TestValidations"/>
         </classes>
     </test>
 </suite>
