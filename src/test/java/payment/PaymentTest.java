@@ -286,7 +286,7 @@ public class PaymentTest extends RequestPayment {
         response = request.basePath("cert/api/paymentInitiation/" + bankId)
                 .filter(new AllureRestAssured())
                 .request(Method.POST);
-        response.then().log().all().assertThat().statusCode(404);
+        response.then().log().all().assertThat().statusCode(400);
         String message = response.jsonPath().getString("Errors.Message");
         Assert.assertTrue(message.contains("BankId no se encuentra registrado"),"No se muestra el mensaje");
     }

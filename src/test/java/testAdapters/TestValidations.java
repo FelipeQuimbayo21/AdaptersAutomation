@@ -73,7 +73,7 @@ public class TestValidations {
     }
     @Test(priority = 15)
     public void scenario15() throws IOException {
-        new PaymentTest().requestSpecificationNoAvailableBalance();
+        new PaymentTest().NoAvailableBalance();
     }
     @Test(priority = 16)
     public void scenario16() throws IOException {
